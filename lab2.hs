@@ -1,10 +1,22 @@
 import Data.Bits
+import Data.Ix
+import Data.List 
+import Data.Function 
+import Control.Monad (liftM2)
 
-main = print $ show (hilbert 9 (9, 4))
+main = putStrLn $ hilbertCurve 6
+
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd = liftM2 (,)
+
+-- | Sample function used to draw Hilbert curve in Excel of any other spreadsheet
+hilbertCurve n = concatMap (\a -> show (fst a) ++ "\t" ++ show (snd a) ++ "\n") 
+                           (map snd (sortBy (compare `on` fst) (map (\k -> (hilbert n k, k)) (cartProd r r))))
+                    where r = range (0, 2 ^ n - 1)
 
 -- | convert (x,y) to d
 -- As described in http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
-hilbert :: Int -> (Int, Int) -> Int
+hilbert :: (Num a) => Int -> (Int, Int) -> a
 hilbert n (x, y) = hilbert0 'a' 0 (n-1)
               where hilbert0 _  d (-1) = d
                     hilbert0 sq d i    = hilbert0 sq' (d' + d * 4) (i - 1)
