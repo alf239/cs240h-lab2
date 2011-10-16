@@ -1,6 +1,6 @@
 import Data.Bits
 
-main = print $ show (hilbert 9 (9, 3))
+main = print $ show (hilbert 9 (9, 4))
 
 -- | convert (x,y) to d
 -- As described in http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
@@ -10,9 +10,12 @@ hilbert n p = hilbert0 p 'a' 0 (n-1)
 hilbert0 :: (Num a) => (Int, Int) -> Char -> a -> Int -> a
 hilbert0 _     _  d (-1) = d
 hilbert0 (x,y) sq d i    = hilbert0 (x,y) (snd hm) ((fst hm) + d * 4) (i - 1)
-                             where qx = if (x `testBit` i) then 1 else 0
-                                   qy = if (y `testBit` i) then 1 else 0
+                             where qx = x `intTestBit` i
+                                   qy = y `intTestBit` i
                                    hm = hilbert_map sq qx qy 
+
+intTestBit :: Bits a => a -> Int -> Int
+intTestBit x i = if (x `testBit` i) then 1 else 0
 
 hilbert_map 'a' 0 0 = (0, 'd')
 hilbert_map 'a' 0 1 = (1, 'a')
