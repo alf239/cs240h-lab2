@@ -7,10 +7,10 @@ main = print $ show (hilbert 9 (9, 4))
 hilbert :: Int -> (Int, Int) -> Int
 hilbert n (x, y) = hilbert0 'a' 0 (n-1)
               where hilbert0 _  d (-1) = d
-                    hilbert0 sq d i    = hilbert0 (snd hm) (fst hm + d * 4) (i - 1)
+                    hilbert0 sq d i    = hilbert0 sq' (d' + d * 4) (i - 1)
                                                  where qx = x `intTestBit` i
                                                        qy = y `intTestBit` i
-                                                       hm = hilbertMap sq qx qy 
+                                                       (d', sq') = hilbertMap sq qx qy 
 
 intTestBit :: Bits a => a -> Int -> Int
 intTestBit x i = if x `testBit` i then 1 else 0
