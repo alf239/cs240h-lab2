@@ -2,7 +2,8 @@ import Data.Bits
 
 main = print $ show (hilbert 9 (9, 3))
 
--- convert (x,y) to d
+-- | convert (x,y) to d
+-- As described in http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
 hilbert :: Int -> (Int, Int) -> Int
 hilbert n p = hilbert0 p 'a' 0 (n-1)
 
