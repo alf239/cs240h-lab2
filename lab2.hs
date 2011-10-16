@@ -5,14 +5,12 @@ main = print $ show (hilbert 9 (9, 4))
 -- | convert (x,y) to d
 -- As described in http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
 hilbert :: Int -> (Int, Int) -> Int
-hilbert n p = hilbert0 p 'a' 0 (n-1)
-
-hilbert0 :: (Num a) => (Int, Int) -> Char -> a -> Int -> a
-hilbert0 _     _  d (-1) = d
-hilbert0 (x,y) sq d i    = hilbert0 (x,y) (snd hm) (fst hm + d * 4) (i - 1)
-                             where qx = x `intTestBit` i
-                                   qy = y `intTestBit` i
-                                   hm = hilbertMap sq qx qy 
+hilbert n (x, y) = hilbert0 'a' 0 (n-1)
+              where hilbert0 _  d (-1) = d
+                    hilbert0 sq d i    = hilbert0 (snd hm) (fst hm + d * 4) (i - 1)
+                                                 where qx = x `intTestBit` i
+                                                       qy = y `intTestBit` i
+                                                       hm = hilbertMap sq qx qy 
 
 intTestBit :: Bits a => a -> Int -> Int
 intTestBit x i = if x `testBit` i then 1 else 0
